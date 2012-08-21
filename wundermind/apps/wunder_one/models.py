@@ -6,7 +6,10 @@ from django.contrib.auth.models import User
 Define users with the Django User class
 """
 
-class Members(models.User):
+"""
+THIS IS NOT NECCESSARY!!! ITS ALREADY DONE!!!!
+
+class Members(models.Model):
     
     first_name = models.first_name(max_length=30)
     last_name = models.last_name(max_length=30)
@@ -23,8 +26,8 @@ class Crew(models.Model):
     crew_leader = models.CharField() #Foreign Key?
     members = models.ManyToMany(Members, through='MemberProfile')
     stack_type = models.CharField(max_length=128)
-    
-
+"""    
+"""
 
 class MemberProfile(models.Model):    
     
@@ -36,7 +39,7 @@ class MemberProfile(models.Model):
 
 class PositionType(models.Model):
 
-    member = models.(MemberProfile) #Related to Members profile                                                                                                                            
+    member = models.ForiegnKey(MemberProfile) #Related to Members profile                                                                                                                            
     back_end =models.BooleanField(False)
     front_end = models.BooleanField(False)
     graphic_artist =models.BooleanField(False)
@@ -45,7 +48,7 @@ class PositionType(models.Model):
 
 
 
-
+"""
 
     #Members
     
@@ -60,7 +63,7 @@ class PositionType(models.Model):
 Many To Many Relationship
 """
 
-
+"""
 class Person(models.Model):
     name = models.CharField(max_length=128)
 
@@ -77,4 +80,4 @@ class Membership(models.Model):
     group = models.ForeignKey(Group)
     date_joined = models.DateField()
     invite_reason = models.CharField(max_length=64)
-
+"""
