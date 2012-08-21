@@ -32,6 +32,10 @@ DATABASES = {
 # In a Windows environment this must be set to your system time zone.
 TIME_ZONE = 'America/Chicago'
 
+
+#Path to the UserProfile model
+AUTH_PROFILE_MODULE = 'apps.wunder_one.UserProfile'
+
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
 LANGUAGE_CODE = 'en-us'
@@ -99,6 +103,8 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    'SessionMiddleware',
+    'AuthenticationMiddleware',
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
