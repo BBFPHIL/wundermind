@@ -2,9 +2,33 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 
+
+#File upload function for upload_to attribute
+
+def content_file_name(instance, filename):
+    return '/'.join(['content', instance.user.email, filename])
+
+
+class Crew(models.Model):
+
+    crew_name = models.CharField(max_length=128)
+
+    crew_desc = models.TextField()
+
+    crew_logo = models.FileField(upload_to=content_file_name) #This could be a really cool thing for each teams identity                                                                             
+
+    members = models.ManyToManyField(User, through='UserProfile')
+
+    def __unicode__(self):
+        return "{0} {1} {2} {3} {4} {5}".format(self.crew_name, self.crew_desc, self.crew_logo, self.members)
+
+
+
+
 class UserProfile(models.Model):
     
     user = models.OneToOneField(User)
+    crew = models.ForeignKey(Crew)
     
     POS_TYPE = (
         ('Backend', 'Backend'),
@@ -80,20 +104,19 @@ class UserProfile(models.Model):
         ('SQLite', 'SQLite')
         )
 
+    skill_rating = models.DecimalField('Skill Rating', max_digits=2, decimal_places=2) #Rating the skills through JavaScript
 
-    position_type = models.CharField('position', choices=POS_TYPE)
-
+    position_type = models.CharField('position', max_length=128, choices=POS_TYPE)
+    
     github_url = models.URLField()
     
-    profile_pic = models.ImageField()
+    profile_pic = models.FileField(upload_to=content_file_name)
     
     about_me = models.TextField()
     
-    skills = models.CharField('skills', choices=SKILL_TYPE)
-    
-    #crew_associated = models.ForeignKey(Crew)
+    skills = models.CharField('skills', max_length=128, choices=SKILL_TYPE)
 
-    
+        
     def create_user_profile(sender, instance, created, **kwargs):
         if created:
             UserProfile.objects.create(user=instance)
@@ -101,18 +124,9 @@ class UserProfile(models.Model):
         post_save.connect(create_user_profile, sender=User)
 
 
+    def __unicode__(self):
+        return "{0} {1} {2} {3} {4} {5}".format(self.skill_rating, self.position_type, self.github_url, self.about_me, self.skills)
 
-class Crew(models.Model):
-    
-    crew_name = models.CharField(max_length=128)
-    
-    crew_desc = models.TextField()
-    
-    crew_logo = models.ImageField() #This could be a really cool thing for each teams identity
-    
-    members = models.ManyToManyField(User, through='UserProfile')
-
-    
 
 class Barracks(models.Model):
     
@@ -120,87 +134,13 @@ class Barracks(models.Model):
     
     project_desc = models.CharField(max_length=128)
     
+    message = models.TextField()
 
+    members = models.ForeignKey(User)
     
+    crew = models.ForeignKey(Crew)
 
-
-
-"""
-Define users with the Django User class
-"""
-
-"""
-THIS IS NOT NECCESSARY!!! ITS ALREADY DONE!!!!
-
-class Members(models.Model):
-    
-    first_name = models.first_name(max_length=30)
-    last_name = models.last_name(max_length=30)
-    email = models.email()
-    password = models.password()
-    #Facebook DOB
-    #Picture from FB
-    #website url from Github
-
-
-class Crew(models.Model):
-    
-    crew_name = models.CharField(max_length=128)
-    crew_leader = models.CharField() #Foreign Key?
-    members = models.ManyToMany(Members, through='MemberProfile')
-    stack_type = models.CharField(max_length=128)
-"""    
-"""
-
-class MemberProfile(models.Model):    
-    
-    members = models.ForeignKey(Members)
-    crew = models.ForiegnKey(Crew)
-    skills = models.CharField(max_length=128)
-    
-
-
-class PositionType(models.Model):
-
-    member = models.ForiegnKey(MemberProfile) #Related to Members profile                                                                                                                            
-    back_end =models.BooleanField(False)
-    front_end = models.BooleanField(False)
-    graphic_artist =models.BooleanField(False)
-    sys_admin =models.BooleanField(False)
-    software_engineer = models.BooleanField(False)
-
-
-
-"""
-
-    #Members
-    
-
-
-
-
-
-
-
-"""
-Many To Many Relationship
-"""
-
-"""
-class Person(models.Model):
-    name = models.CharField(max_length=128)
+    pub_date = models.DateField(auto_now_add=True)
 
     def __unicode__(self):
-        return self.name
-
-class Group(models.Model):
-    name = models.CharField(max_length=128)
-    members = models.ManyToManyField(Person, through='Membership')
-
-
-class Membership(models.Model):
-    person = models.ForeignKey(Person)
-    group = models.ForeignKey(Group)
-    date_joined = models.DateField()
-    invite_reason = models.CharField(max_length=64)
-"""
+        return "{0} {1} {2} {3} {4} {5}".format(self.project_name, self.project_desc, self.members, self.crew)
