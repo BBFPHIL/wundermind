@@ -1,4 +1,6 @@
 *.pyc
 *.py~
 db
-static
+static.
+DS_Store
+*.esproj
