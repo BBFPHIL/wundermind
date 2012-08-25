@@ -1,0 +1,62 @@
+.clear {
+	clear: both;
+}
+#wrapper {
+	width: 875px;
+	margin: auto;
+}
+#content.two-column, #sidebar {
+	float: left;
+	box-sizing: border-box;
+}
+#content.two-column {
+	padding-right: 25px;
+	width: 600px;
+}
+#sidebar {
+	margin-top: 50px;
+	width: 275px;
+	padding-left: 25px;
+	border-left: 1px solid #333;
+}
+
+/* @group Button styles */
+
+.button, input[type=submit], input[type=button] {
+	margin: 5px;
+	display: inline-block;
+	border: 2px solid black;
+	box-shadow: 3px 3px 0 #666;
+	background: skyblue;
+	position: relative;
+}
+.button:first-child, input[type=submit]:first-child, input[type=button]:first-child {
+	margin-left: 0;
+}
+.button:active, input[type=submit]:active, input[type=button]:active {
+	left: 2px;
+	top: 2px;
+	box-shadow: 1px 1px 0 #666;
+}
+.button a {
+	color: black;
+	display: block;
+	text-decoration: none;
+	padding: 8px;
+}
+input[type=submit], input[type=button] {
+	padding: 8px;
+	font: inherit;
+	cursor: pointer;
+}
+
+/* @end */
+
+label.account {
+	width: 210px;
+	display: inline-block;
+	margin: 8px 0;
+}
+.account input[type=text], .account input[type=email], .account input[type=password] {
+	width: 190px;
+}
